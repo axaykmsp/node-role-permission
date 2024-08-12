@@ -1,24 +1,18 @@
-// index.js
 const express = require('express');
-const dotenv = require('dotenv');
-dotenv.config();
-
-const db = require('./config/db');
-
+const authRoutes = require('./routes/auth');
 const app = express();
-const port = process.env.PORT || 3000;
+const authenticateToken = require('./middleware/authMiddleware')
 
-app.get('/api/users', (req, res) => {
-  const query = 'SELECT * FROM users'; // Assuming the table is named 'users'
-  db.query(query, (err, results) => {
-    if (err) {
-      res.status(500).json({ error: err.message });
-      return;
-    }
-    res.json(results);
-  });
+app.use(express.json());
+
+// Use the auth routes
+app.use('/api/auth', authRoutes);
+
+app.get('/api/protected', authenticateToken, (req, res) => {
+    res.json({ message: 'This is a protected route', user: req.user });
 });
 
-app.listen(port, () => {
-  console.log(`Server is running on port ${port}`);
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, () => {
+  console.log(`Server is running on port ${PORT}`);
 });
