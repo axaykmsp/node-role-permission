@@ -1,6 +1,23 @@
 const express = require('express');
 const authRoutes = require('./routes/auth');
 const app = express();
+const cors = require('cors');
+
+const corsOpts = {
+  origin: '*',
+
+  methods: [
+    'GET',
+    'POST',
+  ],
+
+  allowedHeaders: [
+    'Content-Type',
+  ],
+};
+
+app.use(cors(corsOpts));
+
 const authenticateToken = require('./middleware/authMiddleware')
 
 app.use(express.json());
