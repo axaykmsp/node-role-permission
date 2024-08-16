@@ -1,5 +1,6 @@
 const express = require('express');
 const authRoutes = require('./routes/auth');
+const stripeRoutes = require('./routes/stripe')
 const app = express();
 const cors = require('cors');
 
@@ -13,6 +14,7 @@ const corsOpts = {
 
   allowedHeaders: [
     'Content-Type',
+    'Authorization',
   ],
 };
 
@@ -24,6 +26,8 @@ app.use(express.json());
 
 // Use the auth routes
 app.use('/api/auth', authRoutes);
+
+app.use('/api/auth', authenticateToken, stripeRoutes)
 
 app.get('/api/protected', authenticateToken, (req, res) => {
     res.json({ message: 'This is a protected route', user: req.user });
