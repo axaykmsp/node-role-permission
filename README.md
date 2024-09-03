@@ -28,6 +28,19 @@ cp .env.example .env
 
 setup database and stripe details
 
+### 3. Run migration and seeder for prebuilt data
+
+To create default tables run below command
+
+```bash
+npx sequelize-cli db:migrate
+```
+
+If you want to insert default data of user use command
+
+```bash
+npx sequelize db:seed:all
+```
 
 ### 4. Run the Development Server
 
